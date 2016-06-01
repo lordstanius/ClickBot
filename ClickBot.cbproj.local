@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+	<Transactions>
+    <Transaction>2014.08.02 10:00:14.364.cpp,C:\Users\lordstanius\Documents\RAD Studio\Projects\Unit1.cpp=D:\Projects\CBuilder\ClickBot\Main.cpp</Transaction>
+    <Transaction>2014.08.02 10:00:14.364.h,C:\Users\lordstanius\Documents\RAD Studio\Projects\Unit1.h=D:\Projects\CBuilder\ClickBot\Main.h</Transaction>
+    <Transaction>2014.08.02 10:00:14.364.dfm,C:\Users\lordstanius\Documents\RAD Studio\Projects\Unit1.dfm=D:\Projects\CBuilder\ClickBot\Main.dfm</Transaction>
+    <Transaction>2014.08.02 10:23:26.976.cbproj,C:\Users\lordstanius\Documents\RAD Studio\Projects\Project1.cbproj=D:\Projects\CBuilder\ClickBot\ClickBot.cbproj</Transaction>
+    <Transaction>2014.08.02 12:31:34.523.cpp,D:\Projects\CBuilder\ClickBot\Unit1.cpp=D:\Projects\CBuilder\ClickBot\VirtualCursor.cpp</Transaction>
+    <Transaction>2014.08.02 12:31:34.523.h,D:\Projects\CBuilder\ClickBot\Unit1.h=D:\Projects\CBuilder\ClickBot\VirtualCursor.h</Transaction>
+    <Transaction>2014.08.02 12:31:34.523.dfm,D:\Projects\CBuilder\ClickBot\Unit1.dfm=D:\Projects\CBuilder\ClickBot\VirtualCursor.dfm</Transaction>
+    <Transaction>2014.08.02 13:05:09.319.cpp,D:\Projects\CBuilder\ClickBot\Unit1.cpp=D:\Projects\CBuilder\ClickBot\TestForm.cpp</Transaction>
+    <Transaction>2014.08.02 13:05:09.319.h,D:\Projects\CBuilder\ClickBot\Unit1.h=D:\Projects\CBuilder\ClickBot\TestForm.h</Transaction>
+    <Transaction>2014.08.02 13:05:09.319.dfm,D:\Projects\CBuilder\ClickBot\Unit1.dfm=D:\Projects\CBuilder\ClickBot\TestForm.dfm</Transaction>
+    <Transaction>2014.08.02 14:20:52.770.cpp,D:\Projects\CBuilder\ClickBot\TestForm.cpp=</Transaction>
+    <Transaction>2014.08.02 14:20:52.770.dfm,D:\Projects\CBuilder\ClickBot\TestForm.dfm=</Transaction>
+    <Transaction>2014.08.02 15:16:47.906.cpp,D:\Projects\CBuilder\ClickBot\VirtualCursor.cpp=D:\Projects\CBuilder\ClickBot\VirtualCursor1.cpp</Transaction>
+    <Transaction>2014.08.02 15:16:47.906.h,D:\Projects\CBuilder\ClickBot\VirtualCursor.h=D:\Projects\CBuilder\ClickBot\VirtualCursor1.h</Transaction>
+    <Transaction>2014.08.02 15:16:47.906.dfm,D:\Projects\CBuilder\ClickBot\VirtualCursor.dfm=D:\Projects\CBuilder\ClickBot\VirtualCursor1.dfm</Transaction>
+    <Transaction>2014.08.02 15:17:04.179.cpp,D:\Projects\CBuilder\ClickBot\Unit1.cpp=D:\Projects\CBuilder\ClickBot\VirtualCursor2.cpp</Transaction>
+    <Transaction>2014.08.02 15:17:04.179.h,D:\Projects\CBuilder\ClickBot\Unit1.h=D:\Projects\CBuilder\ClickBot\VirtualCursor2.h</Transaction>
+    <Transaction>2014.08.02 15:17:04.179.dfm,D:\Projects\CBuilder\ClickBot\Unit1.dfm=D:\Projects\CBuilder\ClickBot\VirtualCursor2.dfm</Transaction>
+    <Transaction>2014.08.02 20:35:34.930.cpp,D:\Projects\CBuilder\ClickBot\Unit1.cpp=D:\Projects\CBuilder\ClickBot\PixelLookup.cpp</Transaction>
+    <Transaction>2014.08.02 20:35:34.930.h,D:\Projects\CBuilder\ClickBot\Unit1.h=D:\Projects\CBuilder\ClickBot\PixelLookup.h</Transaction>
+  </Transactions>
+</BorlandProject>
