@@ -140,6 +140,7 @@ public:		// User declarations
 	TPoint cursor2pos;
 	TPoint cursorDistance;
 	char shortcut;
+	HWND CurrentHwnd;
 };
 
 const TColor clPaleRed   = RGB(255,190,190);

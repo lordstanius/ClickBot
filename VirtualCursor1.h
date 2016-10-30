@@ -24,6 +24,7 @@ private:	// User declarations
 	bool isDragging;
 public:		// User declarations
 	__fastcall TfrmCursor1(TComponent* Owner);
+	TPoint GetCursorClickPoint();
 };
 
 //---------------------------------------------------------------------------

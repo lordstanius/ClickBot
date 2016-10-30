@@ -46,6 +46,7 @@ __fastcall TfrmMain::TfrmMain(TComponent* Owner): TForm(Owner)
 	cursor2pos = TPoint(Left + 160, Top + 2);
 	plThread = NULL;
 	LoadSettings();
+	CurrentHwnd = NULL;
 	keyboardHook = SetWindowsHookEx(WH_KEYBOARD_LL, (HOOKPROC)KeyboardProc, (HINSTANCE)NULL, 0); //GetCurrentThreadId()
 }
 //---------------------------------------------------------------------------

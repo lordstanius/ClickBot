@@ -24,6 +24,7 @@ private:	// User declarations
 	bool isDragging;
 public:		// User declarations
 	__fastcall TfrmCursor2(TComponent* Owner);
+	TPoint GetCursorClickPoint();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TfrmCursor2 *frmCursor2;

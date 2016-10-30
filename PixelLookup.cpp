@@ -65,7 +65,9 @@ void __fastcall PixelLookup::Execute()
 	log.Write(out.w_str());
 
 	while (!Terminated && DoWork())
+	{
 		Sleep(_ocr ? 50 : 1);
+	}
 
 	Synchronize(&ShutDown);
 
@@ -124,7 +126,7 @@ bool PixelLookup::DoClick(CRect r, TPoint clickPoint, const unsigned char* bmpBy
 	r.x -= rect.left;
 	r.y -= rect.top;
 
-	if (r.width == 0 || r.height == 0)
+	if (r.width == 0 || r.height == 0 || !_ocr) 
 	{
 		TColor pixelColor = (TColor)GetPixel(hdc, r.x, r.y);
 		ReleaseDC(hwnd, hdc);
@@ -419,21 +421,30 @@ void PixelLookup::FlipBmpBuffer(unsigned char* buffer, int width, int height)
 
 bool PixelLookup::Click(TPoint clickPoint, int size)
 {
-	HWND hwnd = WindowFromPoint(clickPoint);
+	int x = clickPoint.x;
+	int y = clickPoint.y;
 
-	if (CheckRefreshed(size) || hwnd == NULL)
+	mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+	ReleaseCapture();
+
+	GetCursorPos(&_oldCursorPoint);
+	SetCursorPos(x, y);
+
+	mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+	mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+
+	frmMain->btnOperation->Caption = "OUT";
+	frmMain->btnOperation->Color = clRed;
+	frmMain->btnOperation->Tag = 0;
+	frmMain->BringToFront();
+
+	HWND hwnd = WindowFromPoint(_oldCursorPoint);
+	SetCursorPos(_oldCursorPoint.x, _oldCursorPoint.y);
+	if (frmMain->CurrentHwnd != NULL && (hwnd == frmCursor1->Handle || hwnd == frmCursor2->Handle))
 	{
-		return false;
+		SetCapture(frmMain->CurrentHwnd);
+		mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
 	}
-
-	RECT windowRect;
-	GetWindowRect(hwnd, &windowRect);
-
-	int x = clickPoint.x - windowRect.left;
-	int y = clickPoint.y - windowRect.top;
-
-	SendMessage(hwnd, WM_LBUTTONDOWN, 0, x | y << 16);
-	SendMessage(hwnd, WM_LBUTTONUP, 0, x | y << 16);
 
 	return true;
 }

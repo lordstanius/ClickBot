@@ -24,12 +24,12 @@ void __fastcall TfrmCursor2::FormPaint(TObject *Sender)
 	Canvas->Brush->Color = frmMain->btnCursor2Color->Color;
 	Canvas->Polygon(points, sizeof(points)/sizeof(TPoint)-1);
 
-	frmMain->clickPoint2 = TPoint(Left-1, Top + 10);
+	frmMain->clickPoint2 = GetCursorClickPoint();
 }
 //---------------------------------------------------------------------------
 void __fastcall TfrmCursor2::FormMouseMove(TObject *Sender, TShiftState Shift, int X, int Y)
 {
-	frmMain->clickPoint2 = TPoint(Left-1, Top + 10);
+	frmMain->clickPoint2 = GetCursorClickPoint();
 
 	if (isDragging)
 	{
@@ -65,9 +65,15 @@ void __fastcall TfrmCursor2::FormMouseUp(TObject *Sender, TMouseButton Button, T
 void __fastcall TfrmCursor2::FormMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift, int X, int Y)
 {
 	delta = TPoint(X,Y);
+	frmMain->CurrentHwnd = this->Handle;
 	isDragging = true;
 }
 //---------------------------------------------------------------------------
+
+TPoint TfrmCursor2::GetCursorClickPoint()
+{
+	return TPoint(Left-1, Top + 10);
+}
 
 /*
 void __fastcall TfrmCursor2::FormKeyPress(TObject *Sender, wchar_t &Key)
