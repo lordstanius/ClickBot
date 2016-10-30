@@ -2,7 +2,7 @@ object frmMain: TfrmMain
   Left = 300
   Top = 300
   BorderIcons = [biSystemMenu]
-  Caption = 'Clicking bot'
+  Caption = 'Clicking bot 2.1'
   ClientHeight = 407
   ClientWidth = 404
   Color = clWindow
@@ -62,7 +62,6 @@ object frmMain: TfrmMain
     OnMouseDown = btnOperationMouseDown
     OnMouseLeave = btnOperationMouseLeave
     OnMouseUp = btnOperationMouseUp
-    ExplicitTop = 365
   end
   object btnCursor1Color: TPanel
     Left = 85
