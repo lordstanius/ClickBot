@@ -13,7 +13,7 @@
 
 #pragma comment(lib, "tessapi.lib")
 
-#define _DEBUG
+//#define _DEBUG
 
 int scale = 2;
 Logger log;
