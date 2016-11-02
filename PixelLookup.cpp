@@ -13,7 +13,7 @@
 
 #pragma comment(lib, "tessapi.lib")
 
-//#define _DEBUG
+#define _DEBUG
 
 int scale = 2;
 Logger log;
@@ -47,7 +47,8 @@ void __fastcall PixelLookup::Execute()
 	//log.WriteTimestamp();
 	log.Write(L"------------ Thread started ----------------------");
 
-    Synchronize(&GetOcrSetting);
+	Synchronize(&GetOcrSetting);
+	log.Write(L"Get Setting");
 	int initResult = 0;
 	if (_ocr)
 	{
@@ -115,40 +116,35 @@ bool PixelLookup::DoClick(CRect r, TPoint clickPoint, const unsigned char* bmpBy
 	log.Write(L"Enter DoClick():");
 	#endif
 
-	RECT rect;  // = { 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN) };
 	bool isClicked = false;
-	//TColor* buffer = NULL;
+	
+	HRGN hrgn = CreateRectRgn(r.x, r.y, r.x + r.width + 1, r.y + r.height + 1);
+	HDC hdc = GetDCEx(NULL, hrgn, DCX_INTERSECTRGN);
 
-	HWND hwnd = WindowFromPoint(Point(r.x, r.y));
-	GetWindowRect(hwnd, &rect);
-	HDC hdc = GetWindowDC(hwnd);
-
-	r.x -= rect.left;
-	r.y -= rect.top;
-
-	if (r.width == 0 || r.height == 0 || !_ocr) 
+	if (r.width == 0 || r.height == 0)
 	{
 		TColor pixelColor = (TColor)GetPixel(hdc, r.x, r.y);
-		ReleaseDC(hwnd, hdc);
+		ReleaseDC(NULL, hdc);
+		#ifdef _DEBUG
+		String out;
+		out.sprintf(L"Pixel color: %d. Target color: %d", pixelColor, _hitColor);
+		log.Write(out.w_str());
+		#endif
+
 		if (pixelColor == _hitColor)
 			isClicked = Click(clickPoint, 0);
 	}
 	else // size > 0
 	{
-		//HDC hdc = GetDC(NULL);
-		//DrawRectangle(hdc, r, color);
-
 		#ifdef _DEBUG
 		log.Write(L"Enter Loading buffer...");
 		#endif
 
-		int buffSize = r.width*scale * r.height*scale * 4;
+		int buffSize = r.width * scale * r.height * scale * 4;
 		if (buffSize != LoadBuffer(&_bmp, r, hdc))
 			log.Write(L"DoClick(): Error in bitmap buffer allocation.");
 
-		//DeleteDC(hdc);
-		ReleaseDC(hwnd, hdc);
-
+		ReleaseDC(NULL, hdc);
 		#ifdef _DEBUG
 		log.Write(L"Buffer loaded...");
 		SaveImage(L"_bmp.bmp", r.width*scale, r.height*scale, _bmp, buffSize);
@@ -157,7 +153,7 @@ bool PixelLookup::DoClick(CRect r, TPoint clickPoint, const unsigned char* bmpBy
 		if (!_ocr && memcmp(_bmp, bmpBytes, buffSize))
 		{
 			//log.WriteBinary(_bmp, buffSize);
-			log.Write(L"Identical windows detected.");
+			log.Write(L"Change in window detected.");
 			log.Write(L"-----------------------------------------");
 			//log.WriteBinary(bmpBytes, buffSize);
 			isClicked = Click(clickPoint, buffSize/4);
@@ -187,6 +183,7 @@ bool PixelLookup::DoClick(CRect r, TPoint clickPoint, const unsigned char* bmpBy
 			}
 		}
 	}
+
 	return isClicked;
 }
 
@@ -234,7 +231,6 @@ void __fastcall PixelLookup::Init()
 	_isTarget2Set = frmMain->cbTargetNum2->Text.Length() > 0;
 	if (_isTarget2Set)
 		_t2 = frmMain->cbTargetNum2->Text[1];
-
 }
 
 
@@ -246,8 +242,6 @@ int PixelLookup::LoadBuffer(unsigned char** pBuffer, CRect r, HDC hdc)
 
 	HBITMAP hbmp = CreateCompatibleBitmap(hdc, r.width*scale, r.height*scale);
 	SelectObject(cdc, hbmp);
-	//HBITMAP hsrc = CreateCompatibleBitmap(hdc, rect.right - rect.left, rect.bottom - rect.top);
-	//SelectObject(hdc, hsrc);
 
 	if (scale > 1)
 		StretchBlt(cdc, 0, 0, r.width*scale, r.height*scale, hdc, r.x, r.y, r.width, r.height, SRCCOPY);
@@ -302,22 +296,17 @@ void PixelLookup::Initialize(TListView* list, unsigned char** pBuffer, CRect& r,
 			if (r.width <= 0 && r.height <= 0)
 				continue;
 
-			HWND hwnd = WindowFromPoint(Point(r.x, r.y));
-			RECT rect; // = { 0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN) };
-			CRect cr = r;
-			GetWindowRect(hwnd, &rect);
-			HDC hdc = GetWindowDC(hwnd);
-			//HDC hdc = GetDC(NULL);
-
-			cr.x -= rect.left;
-			cr.y -= rect.top;
+			HRGN hrgn = CreateRectRgn(r.x, r.y, r.x + r.width + 1, r.y + r.height + 1);
+			HDC hdc = GetDCEx(NULL, hrgn, DCX_INTERSECTRGN);
 
 			int buffSize = r.width * r.height * 4 * scale * scale;
 			*pBuffer = new unsigned char[buffSize];
 
-			if (LoadBuffer(pBuffer, cr, hdc) != buffSize)
+			if (LoadBuffer(pBuffer, r, hdc) != buffSize)
 				log.Write(L"Initialize(): Error in bitmap buffer allocation.");
-
+						
+			ReleaseDC(NULL, hdc);
+			
 			if (_ocr)
 			{
 				FlipBmpBuffer(*pBuffer, r.width * scale, r.height * scale);
@@ -339,7 +328,6 @@ void PixelLookup::Initialize(TListView* list, unsigned char** pBuffer, CRect& r,
 				log.Write(L"Done.");
 				#endif
 			}
-			ReleaseDC(hwnd, hdc);
 		}
 	}
 }
