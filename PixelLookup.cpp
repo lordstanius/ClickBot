@@ -13,9 +13,10 @@
 
 #pragma comment(lib, "tessapi.lib")
 
-//#define _DEBUG
+// #define _DEBUG
 
 int scale = 2;
+String out;
 Logger log;
 //---------------------------------------------------------------------------
 
@@ -61,13 +62,16 @@ void __fastcall PixelLookup::Execute()
 
 	Synchronize(&Init);
 
-	String out(L"Running in OCR mode:");
-	out += _ocr ? L"true" : L"false";
+	out.sprintf(L"Running in OCR mode: %s", _ocr ? L"true" : L"false");
 	log.Write(out.w_str());
 
 	while (!Terminated && DoWork())
 	{
+	#ifdef _DEBUG
+		Sleep(_ocr ? 100 : 100);
+	#else
 		Sleep(_ocr ? 50 : 1);
+	#endif
 	}
 
 	Synchronize(&ShutDown);
@@ -112,6 +116,9 @@ bool PixelLookup::DoWork()
 //bool PixelLookup::DoClick(TListView* list, TPoint clickPoint, TColor* cb, TColor color)
 bool PixelLookup::DoClick(CRect r, TPoint clickPoint, const unsigned char* bmpBytes, TColor color, char value, bool isTargetSet)
 {
+	if (r.width == -1 && r.height == -1)
+		return false;		
+
 	#ifdef _DEBUG
 	log.Write(L"Enter DoClick():");
 	#endif
@@ -121,12 +128,16 @@ bool PixelLookup::DoClick(CRect r, TPoint clickPoint, const unsigned char* bmpBy
 	HRGN hrgn = CreateRectRgn(r.x, r.y, r.x + r.width + 1, r.y + r.height + 1);
 	HDC hdc = GetDCEx(NULL, hrgn, DCX_INTERSECTRGN);
 
+	#ifdef _DEBUG
+		out.sprintf(L"rw = %d; rh = %d", r.width, r.height);
+		log.Write(out.w_str());
+	#endif
+	
 	if (r.width == 0 || r.height == 0)
 	{
 		TColor pixelColor = (TColor)GetPixel(hdc, r.x, r.y);
 		ReleaseDC(NULL, hdc);
 		#ifdef _DEBUG
-		String out;
 		out.sprintf(L"Pixel color: %d. Target color: %d", pixelColor, _hitColor);
 		log.Write(out.w_str());
 		#endif
@@ -134,7 +145,7 @@ bool PixelLookup::DoClick(CRect r, TPoint clickPoint, const unsigned char* bmpBy
 		if (pixelColor == _hitColor)
 			isClicked = Click(clickPoint, 0);
 	}
-	else // size > 0
+	else
 	{
 		#ifdef _DEBUG
 		log.Write(L"Enter Loading buffer...");
@@ -142,7 +153,7 @@ bool PixelLookup::DoClick(CRect r, TPoint clickPoint, const unsigned char* bmpBy
 
 		int buffSize = r.width * scale * r.height * scale * 4;
 		if (buffSize != LoadBuffer(&_bmp, r, hdc))
-			log.Write(L"DoClick(): Error in bitmap buffer allocation.");
+			log.Write(L"DoClick(): outor in bitmap buffer allocation.");
 
 		ReleaseDC(NULL, hdc);
 		#ifdef _DEBUG
@@ -167,7 +178,6 @@ bool PixelLookup::DoClick(CRect r, TPoint clickPoint, const unsigned char* bmpBy
 			char *text = TessAPI_GetUTF8Text();
 			char t = text[0];
 
-			String out;
 			#ifdef _DEBUG
 			log.Write(L"Reckognition done.");
 			log.Write(out.sprintf(L"Detected value of %c", t).w_str());
@@ -282,6 +292,9 @@ void PixelLookup::Initialize(TListView* list, unsigned char** pBuffer, CRect& r,
 
 	TListItem* item;
 
+	r.width = -1;
+	r.height = -1;
+
 	for (int i = 0; i < itemCount; ++i)
 	{
 		item = list->Items->Item[i];
@@ -314,12 +327,11 @@ void PixelLookup::Initialize(TListView* list, unsigned char** pBuffer, CRect& r,
 
 				char* text = TessAPI_GetUTF8Text();
 				value = *text;
-				String err = strlen(text) != 0 ? String(text[0]) : String("failed");
-				log.Write(err.sprintf(L"Recognized start: %c", value).w_str());
+				log.Write(out.sprintf(L"Recognized start: %c", value).w_str());
 
 				#ifdef _DEBUG
 				FlipBmpBuffer(*pBuffer, r.width * scale, r.height * scale);
-				SaveImage(err.sprintf(L"%s.bmp", err).w_str(), r.width*scale, r.height*scale, *pBuffer, buffSize);
+				SaveImage(out.sprintf(L"%c.bmp", value > 48 && value < 58 ? value : '#').w_str(), r.width*scale, r.height*scale, *pBuffer, buffSize);
 				log.Write(L"Clearing tesseract...");
 				#endif
 
@@ -328,6 +340,7 @@ void PixelLookup::Initialize(TListView* list, unsigned char** pBuffer, CRect& r,
 				log.Write(L"Done.");
 				#endif
 			}
+			break;
 		}
 	}
 }
@@ -434,6 +447,9 @@ bool PixelLookup::Click(TPoint clickPoint, int size)
 		mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
 	}
 
+	#ifdef _DEBUG
+		log.Write(L"Clicked!");
+	#endif
 	return true;
 }
 
