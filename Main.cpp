@@ -711,6 +711,7 @@ void TfrmMain::OnShow()
 	delete [] outText;
 	pixDestroy(&image); */
 }
+
 void __fastcall TfrmMain::btnWhereClick(TObject *Sender)
 {
 	int x = txtXcoord->Text.Length() > 0 ? StrToInt(txtXcoord->Text) : 0;
@@ -731,7 +732,7 @@ void TfrmMain::DrawRectangle(int x, int y, int width, int height, TColor color)
 	CRect r(x, y, width, height);
 	HDC hdc = GetDC(NULL);
 	PixelLookup::DrawRectangle(hdc, r, color);
-	DeleteDC(hdc);
+	ReleaseDC(NULL, hdc);
 }
 
 void __fastcall TfrmMain::listView1Click(TObject *Sender)
