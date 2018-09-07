@@ -22,14 +22,13 @@ private:
 	void __fastcall ShutDown();
 	void __fastcall Init();
 	void __fastcall GetOcrSetting();
-	//void LoadBuffer(TColor* buffer, TPoint p, int size, HDC hdc);
-	bool DoWork();
+	bool IsClicked();
 	int LoadBuffer(unsigned char** ppBuffer, CRect rect, HDC hdc);
-	//void FillBuffer(TListView* list, TColor** cb);
 	void Initialize(TListView* list, unsigned char** pBuffer, CRect& rect, char& value);
-	bool Click(TPoint clickPoint, int pixelCount);
-	//bool DoClick(TListView* coordList, TPoint clickPoint, TColor* buffer, TColor color);
-	bool DoClick(CRect r, TPoint clickPoint, const unsigned char* bmpBytes, TColor color, char value, bool targetSet);
+	void Click(TPoint clickPoint);
+	bool IsMatchFound(CRect r, TPoint clickPoint, const unsigned char* bmpBytes, TColor color, char value, bool targetSet);
+	bool IsPixelMatched(CRect r);
+	bool IsOCRMatched(CRect r, char value, bool isTargetSet);
 	bool CheckRefreshed(int pixelCount);
 
 	unsigned char*  _bmp; // temporary buffer for storing current region
