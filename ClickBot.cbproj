@@ -68,23 +68,6 @@
 			<TASM_Debugging>None</TASM_Debugging>
 		</PropertyGroup>
 		<ItemGroup>
-			<CppCompile Include="VirtualCursor2.cpp">
-				<Form>frmCursor2</Form>
-				<DependentOn>VirtualCursor2.h</DependentOn>
-				<BuildOrder>4</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="ClickBot.cpp">
-				<BuildOrder>0</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="Logger.cpp">
-				<DependentOn>Logger.h</DependentOn>
-				<BuildOrder>6</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="VirtualCursor1.cpp">
-				<Form>frmCursor1</Form>
-				<DependentOn>VirtualCursor1.h</DependentOn>
-				<BuildOrder>3</BuildOrder>
-			</CppCompile>
 			<CppCompile Include="Main.cpp">
 				<Form>frmMain</Form>
 				<DependentOn>Main.h</DependentOn>
@@ -97,9 +80,26 @@
 				<DependentOn>PixelLookup.h</DependentOn>
 				<BuildOrder>5</BuildOrder>
 			</CppCompile>
-			<FormResources Include="VirtualCursor2.dfm"/>
-			<FormResources Include="VirtualCursor1.dfm"/>
+			<CppCompile Include="VirtualCursor1.cpp">
+				<Form>frmCursor1</Form>
+				<DependentOn>VirtualCursor1.h</DependentOn>
+				<BuildOrder>3</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="VirtualCursor2.cpp">
+				<Form>frmCursor2</Form>
+				<DependentOn>VirtualCursor2.h</DependentOn>
+				<BuildOrder>4</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="ClickBot.cpp">
+				<BuildOrder>0</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="Logger.cpp">
+				<DependentOn>Logger.h</DependentOn>
+				<BuildOrder>6</BuildOrder>
+			</CppCompile>
 			<FormResources Include="Main.dfm"/>
+			<FormResources Include="VirtualCursor1.dfm"/>
+			<FormResources Include="VirtualCursor2.dfm"/>
 			<BuildConfiguration Include="Base">
 				<Key>Base</Key>
 			</BuildConfiguration>
@@ -122,7 +122,7 @@
 						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
 						<VersionInfo Name="AutoIncBuild">True</VersionInfo>
 						<VersionInfo Name="MajorVer">2</VersionInfo>
-						<VersionInfo Name="MinorVer">1</VersionInfo>
+						<VersionInfo Name="MinorVer">3</VersionInfo>
 						<VersionInfo Name="Release">0</VersionInfo>
 						<VersionInfo Name="Build">83</VersionInfo>
 						<VersionInfo Name="Debug">False</VersionInfo>
@@ -136,7 +136,7 @@
 					<VersionInfoKeys>
 						<VersionInfoKeys Name="CompanyName"/>
 						<VersionInfoKeys Name="FileDescription"/>
-						<VersionInfoKeys Name="FileVersion">2.1.0.83</VersionInfoKeys>
+						<VersionInfoKeys Name="FileVersion">2.3.0.83</VersionInfoKeys>
 						<VersionInfoKeys Name="InternalName"/>
 						<VersionInfoKeys Name="LegalCopyright"/>
 						<VersionInfoKeys Name="LegalTrademarks"/>
