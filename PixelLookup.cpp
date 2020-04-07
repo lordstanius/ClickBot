@@ -191,7 +191,7 @@ bool PixelLookup::IsClicked()
 		return true;
 	}
 
-	if (IsMatchFound(_rect2, frmMain->clickPoint2, _bmp2, frmMain->btnCursor2Color->Color, _t2, _isTarget2Set))
+	if (IsMatchFound(_rect2, frmMain->clickPoint2, _bmp2, _cursor2Color, _t2, _isTarget2Set))
 	{
 		Click(frmMain->clickPoint2);
 		return true;

@@ -663,13 +663,15 @@ void TfrmMain::MoveVirtualCursor(TObject* sender)
 	{
 		frmCursor2->Left = frmCursor1->Left + cursorDistance.x;
 		frmCursor2->Top = frmCursor1->Top + cursorDistance.y;
-		frmMain->clickPoint2 = TPoint(frmCursor2->Left-1, frmCursor2->Top + 10);
+		clickPoint2 = frmCursor2->GetCursorClickPoint();
+		clickPoint1 = frmCursor1->GetCursorClickPoint();
 	}
 	else
 	{
 		frmCursor1->Left = frmCursor2->Left - cursorDistance.x;
 		frmCursor1->Top = frmCursor2->Top - cursorDistance.y;
-		frmMain->clickPoint1 = TPoint(frmCursor1->Left + frmCursor1->Width, frmCursor1->Top + 10);
+		clickPoint1 = frmCursor1->GetCursorClickPoint();
+		clickPoint2 = frmCursor2->GetCursorClickPoint();
 	}
 }
 //---------------------------------------------------------------------------
