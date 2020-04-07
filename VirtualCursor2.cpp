@@ -18,11 +18,13 @@ __fastcall TfrmCursor2::TfrmCursor2(TComponent* Owner) : TForm(Owner)
 //---------------------------------------------------------------------------
 void __fastcall TfrmCursor2::FormPaint(TObject *Sender)
 {
-	TPoint points[] = { TPoint(0, 10), TPoint(10, 0), TPoint(10, 5), TPoint(Width-1, 5), TPoint(Width-1, 15), TPoint(10, 15), TPoint(10, 20) };
+	TPoint points[] = { TPoint(0, 20), TPoint(82, 0), TPoint(66, 15), TPoint(Width-10, 15), TPoint(Width-10, 25), TPoint(66, 25), TPoint(82, 40) };
 
 	Canvas->Pen->Color = frmMain->btnCursor2Color->Color;
 	Canvas->Brush->Color = frmMain->btnCursor2Color->Color;
 	Canvas->Polygon(points, sizeof(points)/sizeof(TPoint)-1);
+	Canvas->Ellipse(Width-Height, 0, Width, Height);
+
 
 	frmMain->clickPoint2 = GetCursorClickPoint();
 }
@@ -72,7 +74,7 @@ void __fastcall TfrmCursor2::FormMouseDown(TObject *Sender, TMouseButton Button,
 
 TPoint TfrmCursor2::GetCursorClickPoint()
 {
-	return TPoint(Left-1, Top + 10);
+	return TPoint(Left-1, Top + 20);
 }
 
 /*

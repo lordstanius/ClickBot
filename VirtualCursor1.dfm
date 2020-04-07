@@ -3,11 +3,12 @@ object frmCursor1: TfrmCursor1
   Top = 0
   BorderStyle = bsNone
   Caption = 'frmCursor1'
-  ClientHeight = 21
-  ClientWidth = 56
+  ClientHeight = 41
+  ClientWidth = 167
   Color = clWhite
   TransparentColor = True
   TransparentColorValue = clWhite
+  Constraints.MinWidth = 107
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
   Font.Height = -11

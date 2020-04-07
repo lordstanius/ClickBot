@@ -13,7 +13,7 @@
 
 #pragma comment(lib, "tessapi.lib")
 
-//#define _DEBUG
+// #define _DEBUG
 
 int scale = 1;
 String out;
@@ -36,8 +36,10 @@ void __fastcall PixelLookup::Execute()
 	//log.WriteTimestamp();
 	log.Write(L"------------ Thread started ----------------------");
 
+  log.Write(L"Reading OCR setting...");
 	Synchronize(&GetOcrSetting);
-	log.Write(L"Get Setting");
+	out.sprintf(L"Done. Running in OCR mode: %s", _ocr ? L"true" : L"false");
+	log.Write(out.w_str());
 	int initResult = 0;
 	if (_ocr)
 	{
@@ -50,8 +52,6 @@ void __fastcall PixelLookup::Execute()
 
 	Synchronize(&Init);
 
-	out.sprintf(L"Running in OCR mode: %s", _ocr ? L"true" : L"false");
-	log.Write(out.w_str());
 
 	bool done = false;
 	while (!Terminated && !done)
@@ -86,22 +86,22 @@ void __fastcall PixelLookup::Execute()
 void __fastcall PixelLookup::Init()
 {
 #ifdef _DEBUG
-	log.Write(L"Initializing first window.");
+	log.Write(L"Initializing first list.");
 #endif
 	Initialize(frmMain->listView1, &_bmp1, _rect1, _t1);
 
 #ifdef _DEBUG
-	log.Write(L"Initializing second window.");
+	log.Write(L"Initializing second list.");
 #endif
 	Initialize(frmMain->listView2, &_bmp2, _rect2, _t2);
 
 	int size1 = _rect1.width * scale * _rect1.height * scale * 4;
 	int size2 = _rect2.width * scale * _rect2.height * scale * 4;
 
-#ifdef _DEBUG
-	log.Write(L"Getting size.");
-#endif
 	_bmp = new unsigned char[size2 > size1 ? size2 : size1];
+#ifdef _DEBUG
+	log.Write(L"Allocating buffer...");
+#endif
 
 	_isTarget1Set = frmMain->cbTargetNum1->Text.Length() > 0;
 	if (_isTarget1Set)
@@ -110,19 +110,28 @@ void __fastcall PixelLookup::Init()
 	_isTarget2Set = frmMain->cbTargetNum2->Text.Length() > 0;
 	if (_isTarget2Set)
 		_t2 = frmMain->cbTargetNum2->Text[1];
+
+#ifdef _DEBUG
+	log.Write(L"Init() completed successfully.");
+#endif
 }
 
 void PixelLookup::Initialize(TListView *list, unsigned char **pBuffer, CRect &r, char &value)
 {
-	int itemCount = list->Items->Count;
-
-	if (itemCount == 0)
-		return;
-
-	TListItem *item;
-
 	r.width = -1;
 	r.height = -1;
+
+	int itemCount = list->Items->Count;
+
+	if (itemCount == 0) 
+	{
+#ifdef _DEBUG
+log.Write(L"Nothing to initialize.");
+#endif
+		return;
+	}
+
+	TListItem *item;
 
 	for (int i = 0; i < itemCount; ++i)
 	{
@@ -185,9 +194,6 @@ bool PixelLookup::IsClicked()
 	if (IsMatchFound(_rect2, frmMain->clickPoint2, _bmp2, frmMain->btnCursor2Color->Color, _t2, _isTarget2Set))
 	{
 		Click(frmMain->clickPoint2);
-		if (IsMatchFound(_rect1, frmMain->clickPoint1, _bmp1, _cursor1Color, _t1, _isTarget1Set))
-			Click(frmMain->clickPoint1);
-
 		return true;
 	}
 
@@ -200,13 +206,13 @@ bool PixelLookup::IsMatchFound(CRect r, TPoint clickPoint, const unsigned char *
 		return false;
 
 #ifdef _DEBUG
-	log.Write(L"Enter DoClick():");
+	log.Write(L"IsMatchFound():");
 #endif
-	if (r.width == 0 || r.height == 0)
+	if (r.width == 0 && r.height == 0)
 		return IsPixelMatched(r);
 
 #ifdef _DEBUG
-	log.Write(L"Enter Loading buffer...");
+	log.Write(L"Loading buffer...");
 #endif
 	HDC hdc = GetDC(NULL);
 	int buffSize = r.width * scale * r.height * scale * 4;
@@ -215,7 +221,7 @@ bool PixelLookup::IsMatchFound(CRect r, TPoint clickPoint, const unsigned char *
 	ReleaseDC(NULL, hdc);
 
 #ifdef _DEBUG
-	log.Write(L"Buffer loaded...");
+	log.Write(L"Buffer loaded.");
 	SaveImage(L"_bmp.bmp", r.width * scale, r.height * scale, _bmp, buffSize);
 #endif
 
@@ -236,6 +242,11 @@ bool PixelLookup::IsMatchFound(CRect r, TPoint clickPoint, const unsigned char *
 
 bool PixelLookup::IsPixelMatched(CRect r)
 {
+	#ifdef _DEBUG
+	out.sprintf(L"Processing pixel@[%d, %d] rw = %d; rh = %d", r.x, r.y, r.width, r.height);
+	log.Write(out.w_str());
+#endif
+
 	RECT rect;
 	HWND hwnd = WindowFromPoint(Point(r.x, r.y));
 	GetWindowRect(hwnd, &rect);
@@ -243,11 +254,6 @@ bool PixelLookup::IsPixelMatched(CRect r)
 
 	r.x -= rect.left;
 	r.y -= rect.top;
-
-#ifdef _DEBUG
-	out.sprintf(L"[%d, %d] rw = %d; rh = %d", r.x, r.y, r.width, r.height);
-	log.Write(out.w_str());
-#endif
 
 	TColor pixelColor = (TColor)GetPixel(hdc, r.x, r.y);
 	ReleaseDC(hwnd, hdc);
@@ -264,12 +270,17 @@ bool PixelLookup::IsOCRMatched(CRect r, char value, bool isTargetSet)
 	FlipBmpBuffer(_bmp, r.width * scale, r.height * scale);
 	TessAPI_SetImage(_bmp, r.width * scale, r.height * scale, 4, r.width * scale * 4);
 
+#ifdef _DEBUG
+	out.sprintf(L"Processing rect@[%d, %d] rw = %d; rh = %d", r.x, r.y, r.width, r.height);
+	log.Write(out.w_str());
+#endif
+
 	char *text = TessAPI_GetUTF8Text();
 	char t = text[0];
 
 #ifdef _DEBUG
-	log.Write(L"Reckognition done.");
-	log.Write(out.sprintf(L"Detected value of %c", t).w_str());
+	log.Write(L"Recognition completed.");
+	log.Write(out.sprintf(L"Detected value: %c", (t == '\0' ? '?' : t)).w_str());
 #endif
 
 	TessAPI_Clear();

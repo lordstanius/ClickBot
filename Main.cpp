@@ -553,12 +553,12 @@ void TfrmMain::LoadSettings()
 	btnCursor1Color->Color = GetPrivateProfileInt(TEXT("VirtualCursor1"), TEXT("Color"), clBlue, path.t_str());
 	cursor1pos.x = GetPrivateProfileInt(TEXT("VirtualCursor1"), TEXT("X"), cursor1pos.x, path.t_str());
 	cursor1pos.y = GetPrivateProfileInt(TEXT("VirtualCursor1"), TEXT("Y"), cursor1pos.y, path.t_str());
-	upDown1->Position = GetPrivateProfileInt(TEXT("VirtualCursor1"), TEXT("Width"), 56, path.t_str());
+	upDown1->Position = GetPrivateProfileInt(TEXT("VirtualCursor1"), TEXT("Width"), 107, path.t_str());
 
 	btnCursor2Color->Color = GetPrivateProfileInt(TEXT("VirtualCursor2"), TEXT("Color"), RGB(250, 150, 0), path.t_str());
 	cursor2pos.x = GetPrivateProfileInt(TEXT("VirtualCursor2"), TEXT("X"), cursor2pos.x, path.t_str());
 	cursor2pos.y = GetPrivateProfileInt(TEXT("VirtualCursor2"), TEXT("Y"), cursor2pos.y, path.t_str());
-	upDown2->Position = GetPrivateProfileInt(TEXT("VirtualCursor2"), TEXT("Width"), 56, path.t_str());
+	upDown2->Position = GetPrivateProfileInt(TEXT("VirtualCursor2"), TEXT("Width"), 107, path.t_str());
 
 	for (int i = 0; i < count1; ++i)
 	{
@@ -635,7 +635,7 @@ void __fastcall TfrmMain::upDown1Click(TObject *Sender, TUDBtnType Button)
 void __fastcall TfrmMain::upDown2Click(TObject *Sender, TUDBtnType Button)
 {
 	frmCursor2->Width = upDown2->Position;
-	frmCursor1->Refresh();
+	frmCursor2->Refresh();
 }
 //---------------------------------------------------------------------------
 

@@ -1,8 +1,8 @@
 object frmMain: TfrmMain
   Left = 300
   Top = 300
-  BorderIcons = [biSystemMenu]
-  Caption = 'Clicking bot 2.3'
+  BorderIcons = [biSystemMenu, biMinimize]
+  Caption = 'Clicking bot 2.4'
   ClientHeight = 407
   ClientWidth = 404
   Color = clWindow
@@ -171,6 +171,7 @@ object frmMain: TfrmMain
     Top = 89
     Width = 57
     Height = 18
+    Hint = 'Dodaj parametre (x,y,a,b) na spisak'
     BevelInner = bvSpace
     BevelKind = bkSoft
     BevelOuter = bvNone
@@ -183,6 +184,8 @@ object frmMain: TfrmMain
     Font.Style = [fsBold]
     ParentBackground = False
     ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 6
     OnMouseDown = btnAdd1MouseDown
     OnMouseEnter = btnAdd1MouseEnter
@@ -194,6 +197,7 @@ object frmMain: TfrmMain
     Top = 89
     Width = 57
     Height = 18
+    Hint = 'Obri'#353'i selektovanu stavku sa spiska'
     BevelInner = bvSpace
     BevelKind = bkSoft
     BevelOuter = bvNone
@@ -206,6 +210,8 @@ object frmMain: TfrmMain
     Font.Style = [fsBold]
     ParentBackground = False
     ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 7
     OnMouseDown = btnRemove1MouseDown
     OnMouseEnter = btnRemove1MouseEnter
@@ -217,6 +223,7 @@ object frmMain: TfrmMain
     Top = 90
     Width = 57
     Height = 18
+    Hint = 'Obri'#353'i selektovanu stavku sa spiska'
     BevelInner = bvSpace
     BevelKind = bkSoft
     BevelOuter = bvNone
@@ -229,6 +236,8 @@ object frmMain: TfrmMain
     Font.Style = [fsBold]
     ParentBackground = False
     ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 8
     OnMouseDown = btnRemove2MouseDown
     OnMouseEnter = btnRemove2MouseEnter
@@ -240,6 +249,7 @@ object frmMain: TfrmMain
     Top = 90
     Width = 57
     Height = 18
+    Hint = 'Dodaj parametre (x,y,a,b) na spisak'
     BevelInner = bvSpace
     BevelKind = bkSoft
     BevelOuter = bvNone
@@ -252,6 +262,8 @@ object frmMain: TfrmMain
     Font.Style = [fsBold]
     ParentBackground = False
     ParentFont = False
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 9
     OnMouseDown = btnAdd2MouseDown
     OnMouseEnter = btnAdd2MouseEnter
@@ -264,11 +276,11 @@ object frmMain: TfrmMain
     Width = 17
     Height = 22
     Hint = 'Produ'#382'ava/skra'#263'uje virtuelni kursor'
-    Min = 15
+    Min = 107
     Max = 200
     Increment = 2
     ParentShowHint = False
-    Position = 56
+    Position = 107
     ShowHint = True
     TabOrder = 10
     OnClick = upDown1Click
@@ -279,11 +291,11 @@ object frmMain: TfrmMain
     Width = 17
     Height = 22
     Hint = 'Produ'#382'ava/skra'#263'uje virtuelni kursor'
-    Min = 15
+    Min = 107
     Max = 200
     Increment = 2
     ParentShowHint = False
-    Position = 56
+    Position = 107
     ShowHint = True
     TabOrder = 11
     OnClick = upDown2Click
@@ -455,6 +467,8 @@ object frmMain: TfrmMain
     Height = 17
     Hint = 'Dodaj vrednost u listu'
     Caption = '+'
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 15
     OnClick = btnAddCombo1Click
   end
@@ -465,6 +479,8 @@ object frmMain: TfrmMain
     Height = 17
     Hint = 'Dodaj vrednost u listu'
     Caption = '+'
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 16
     OnClick = btnAddCombo2Click
   end
@@ -475,6 +491,8 @@ object frmMain: TfrmMain
     Height = 17
     Hint = 'Obri'#353'i vrednost iz liste'
     Caption = '-'
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 17
     OnClick = btnClearCombo1Click
   end
@@ -485,6 +503,8 @@ object frmMain: TfrmMain
     Height = 17
     Hint = 'Obri'#353'i vrednost iz liste'
     Caption = '-'
+    ParentShowHint = False
+    ShowHint = True
     TabOrder = 18
     OnClick = btnClearCombo2Click
   end
