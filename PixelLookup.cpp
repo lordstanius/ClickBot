@@ -36,7 +36,7 @@ void __fastcall PixelLookup::Execute()
 	//log.WriteTimestamp();
 	log.Write(L"------------ Thread started ----------------------");
 
-  log.Write(L"Reading OCR setting...");
+	log.Write(L"Reading OCR setting...");
 	Synchronize(&GetOcrSetting);
 	out.sprintf(L"Done. Running in OCR mode: %s", _ocr ? L"true" : L"false");
 	log.Write(out.w_str());
@@ -51,7 +51,6 @@ void __fastcall PixelLookup::Execute()
 	}
 
 	Synchronize(&Init);
-
 
 	bool done = false;
 	while (!Terminated && !done)
@@ -123,10 +122,10 @@ void PixelLookup::Initialize(TListView *list, unsigned char **pBuffer, CRect &r,
 
 	int itemCount = list->Items->Count;
 
-	if (itemCount == 0) 
+	if (itemCount == 0)
 	{
 #ifdef _DEBUG
-log.Write(L"Nothing to initialize.");
+	log.Write(L"Nothing to initialize.");
 #endif
 		return;
 	}
@@ -208,6 +207,7 @@ bool PixelLookup::IsMatchFound(CRect r, TPoint clickPoint, const unsigned char *
 #ifdef _DEBUG
 	log.Write(L"IsMatchFound():");
 #endif
+
 	if (r.width == 0 && r.height == 0)
 		return IsPixelMatched(r);
 
@@ -242,7 +242,7 @@ bool PixelLookup::IsMatchFound(CRect r, TPoint clickPoint, const unsigned char *
 
 bool PixelLookup::IsPixelMatched(CRect r)
 {
-	#ifdef _DEBUG
+#ifdef _DEBUG
 	out.sprintf(L"Processing pixel@[%d, %d] rw = %d; rh = %d", r.x, r.y, r.width, r.height);
 	log.Write(out.w_str());
 #endif
@@ -297,18 +297,19 @@ bool PixelLookup::IsOCRMatched(CRect r, char value, bool isTargetSet)
 
 void PixelLookup::Click(TPoint clickPoint)
 {
-	int x = clickPoint.x;
-	int y = clickPoint.y;
-
-	GetCursorPos(&_oldCursorPoint); // save cursor pos before click
 	HWND hwnd = WindowFromPoint(clickPoint);
-	SendMessage(hwnd, WA_ACTIVE, 0, 0); // activate target window first
 
-	ReleaseCapture(); // release capture from current window
-	SetCursorPos(x, y);
+	if (hwnd == NULL)
+		return;
 
-	mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0); // simulate click
-	mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+	RECT windowRect;
+	GetWindowRect(hwnd, &windowRect);
+
+	int x = clickPoint.x - windowRect.left;
+	int y = clickPoint.y - windowRect.top;
+
+	SendMessage(hwnd, WM_LBUTTONDOWN, 0, x | y << 16);
+	SendMessage(hwnd, WM_LBUTTONUP, 0, x | y << 16);
 
 #ifdef _DEBUG
 	log.Write(L"Clicked!");
@@ -455,14 +456,6 @@ void __fastcall PixelLookup::ShutDown()
 	frmMain->btnOperation->Caption = "OUT";
 	frmMain->btnOperation->Color = clRed;
 	frmMain->btnOperation->Tag = 0;
-	frmMain->BringToFront();
-
-	SetCursorPos(_oldCursorPoint.x, _oldCursorPoint.y); // restore cursor pos
-
-	// disable
-	//frmMain->btnOperation->Font->Color = clGray;
-	//frmMain->btnOperation->Color = clSilver;
-	//frmMain->btnOperation->Enabled = false;
 }
 
 // returns true if all pixels are the same color. this indicates that

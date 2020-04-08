@@ -43,7 +43,6 @@ private:
 
 	bool _ocr;
 
-	POINT _oldCursorPoint;
 	TColor _cursor1Color;
 	TColor _cursor2Color;
 	TColor _hitColor;

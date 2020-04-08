@@ -2,7 +2,7 @@ object frmMain: TfrmMain
   Left = 300
   Top = 300
   BorderIcons = [biSystemMenu, biMinimize]
-  Caption = 'Clicking bot 2.4'
+  Caption = 'Clicking bot 2.4.1'
   ClientHeight = 407
   ClientWidth = 404
   Color = clWindow
